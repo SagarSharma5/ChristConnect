@@ -32,6 +32,7 @@ function LandingPage() {
               alt="Post"
               className="w-96 h-64 object-cover rounded mb-4 bg-bgcolor "
             />
+            <div className=""></div>
           </div>
         </div>
         <div className=" text-darkblue items-center flex flex-col justify-center">
