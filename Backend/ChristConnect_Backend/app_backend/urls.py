@@ -9,5 +9,6 @@ from django.conf import settings
 urlpatterns=[
     # re_path('',views.server),
     path('viewAllPosts/', views.viewAllPostsAPI),
-    path('post/', views.postAPI)
-] 
+    path('post/', views.postAPI),
+    path('deletePost/<int:post_id>/', views.deletePostAPI, name='delete_post')
+]   
