@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IoMdHome } from "react-icons/io";
 import { IoMdChatboxes } from "react-icons/io";
@@ -9,29 +8,12 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { IoLogOutOutline } from "react-icons/io5";
 
 function Navbar() {
-  const [isSticky, setIsSticky] = useState(false);
-
-  const handleScroll = () => {
-    const offset = window.scrollY;
-    const stickyPoint = 110; // The point where you want the navbar to become sticky
-    setIsSticky(offset >= stickyPoint);
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   return (
     <div
-      className={`w-96 text-white min-h-screen px-[20px]  flex flex-col items-center`}
+      className={`w-96 text-white min-h-screen px-[20px] items-center flex flex-col`}
     >
       <div
-        className={`w-[350px] bg-blue rounded-xl h-[600px] my-4 flex flex-col drop-shadow-lg transition-all duration-500 ${
-          isSticky ? "fixed top-0 shadow-lg" : "relative"
-        }`}
+        className={`w-[340px] bg-blue rounded-xl h-[600px] my-4 flex flex-col drop-shadow-lg`}
       >
         <div className="flex flex-col mt-6">
           <nav className="ml-10 text-md">
@@ -95,9 +77,7 @@ function Navbar() {
         </div>
       </div>
       <div
-        className={`mt-[10px] w-[350px] h-18 flex flex-row items-center rounded-xl bg-blue p-4 gap-x-[1px] transition-all duration-500 cursor-pointer ${
-          isSticky ? "fixed top-[630px] shadow-lg" : "relative"
-        }`}
+        className={`mt-[10px] w-[350px] h-18 flex flex-row items-center rounded-xl bg-blue p-4 gap-x-[1px] transition-all duration-500 cursor-pointer`}
       >
         <div className="flex justify-center items-center w-[36px] h-[36px] ml-2 overflow-hidden rounded-full bg-white">
           <img
