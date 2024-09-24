@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { CiImageOn } from "react-icons/ci";
 
-const Create = ({ addPost }) => {
+const Create = ({ addPost, username }) => {
   const [content, setContent] = useState("");
 
   const handleSubmit = (e) => {
@@ -11,14 +11,11 @@ const Create = ({ addPost }) => {
     if (!content.trim()) return;
 
     // Define the data to send in the POST request
-  const postData = {
-    "user_id": "SagarSharma",  // User ID
-    "user_designation": "Student", // Role
-    "fname": "Sagar",  // First name
-    "lname": "Sharma",   // Last name
-    "post_text": content,  // Use 'content' as 'post_text'
-  };
-
+    const postData = {
+      user_id: username,  // Use logged-in username
+      user_designation: "Student", // Role
+      post_text: content,  // Use 'content' as 'post_text'
+    };
 
     // POST request to Django API
     fetch("http://127.0.0.1:8000/post/", {
@@ -28,19 +25,18 @@ const Create = ({ addPost }) => {
       },
       body: JSON.stringify(postData),
     })
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
-          // Handle non-2xx HTTP responses
-          return response.text().then(text => { throw new Error(text) });
+          return response.text().then((text) => { throw new Error(text); });
         }
         return response.json(); // Parse JSON if the response is OK
       })
-      .then(data => {
+      .then((data) => {
         console.log("Post created:", data);
         addPost(data); // Add the new post to the list
         setContent(""); // Clear form
       })
-      .catch(error => console.error("Error posting data:", error));
+      .catch((error) => console.error("Error posting data:", error));
   };
 
   return (

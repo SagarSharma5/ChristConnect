@@ -6,7 +6,5 @@ class post_tableSerializer(serializers.ModelSerializer):
         model = post_table
         fields = ('post_id',
                   'user_id',
-                  'fname',
-                  'lname',
                   'post_text',
                   'post_image')

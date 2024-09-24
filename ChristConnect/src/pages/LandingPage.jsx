@@ -35,17 +35,13 @@ function LandingPage() {
   };
 
   const deletePost = (post_id) => {
-    // Show a confirmation dialog before deleting
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this post?"
-    );
+    const confirmed = window.confirm("Are you sure you want to delete this post?");
     if (confirmed) {
       fetch(`http://127.0.0.1:8000/deletePost/${post_id}/`, {
         method: "DELETE",
       })
         .then((response) => {
           if (response.ok) {
-            // Update state by removing the deleted post
             setPosts(posts.filter((post) => post.post_id !== post_id));
           } else {
             console.error("Error deleting post:", response);
@@ -63,7 +59,7 @@ function LandingPage() {
           Welcome, {username || "Guest"}!
         </h1>
         <div className="mb-4">
-          <Create addPost={addPost} />
+          <Create addPost={addPost} username={username} />
         </div>
         <div className="gap-y-4 pt-4 border-t-[1px] border-black border-opacity-20 w-full">
           {posts.map((post) => (
@@ -82,14 +78,10 @@ function LandingPage() {
                   </div>
                   <div className="flex flex-col ml-2">
                     <p className="text-lg sm:text-xl">{post.user_id}</p>
-                    <p className="text-xs sm:text-sm">
-                      {post.user_designation}
-                    </p>
+                    <p className="text-xs sm:text-sm">{post.user_designation}</p>
                   </div>
                 </div>
-                <p className="text-base sm:text-lg w-full mt-2 sm:ml-4">
-                  {post.post_text}
-                </p>
+                <p className="text-base sm:text-lg w-full mt-2 sm:ml-4">{post.post_text}</p>
                 {post.post_image && (
                   <img
                     src={post.post_image}
@@ -97,8 +89,6 @@ function LandingPage() {
                     className="w-full sm:w-96 h-48 sm:h-64 object-cover rounded mb-4 bg-bgcolor"
                   />
                 )}
-
-                {/* Display delete button only for the logged-in user's posts */}
                 {post.user_id === username && (
                   <button
                     className="absolute top-2 right-2 bg-transparent hover:bg-red-500 text-red-500 hover:text-white p-2 rounded-full transition duration-300"
