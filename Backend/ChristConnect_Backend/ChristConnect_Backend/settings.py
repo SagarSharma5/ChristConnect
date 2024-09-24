@@ -88,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'CCDB',
         'USER': 'postgres',
-        'PASSWORD': 'ishupapa',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': '5432'
     }
