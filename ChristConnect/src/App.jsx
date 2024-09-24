@@ -1,14 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Navbar from "./components/Navbar";
 import LandingPage from "./pages/LandingPage";
 import DiscussionForum from "./pages/DiscussionForum";
 import Events from "./pages/Events";
 import CampusMapLocation from "./pages/CampusMapLocation";
 import RoommateListing from "./pages/RoommateListing";
 import Header from "./components/Header";
-
-import News from "./components/News";
 import Footer from "./components/Footer";
 import LoginSignup from "./pages/LoginSignup";
 

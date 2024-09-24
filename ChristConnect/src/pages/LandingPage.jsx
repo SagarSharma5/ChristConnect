@@ -35,7 +35,9 @@ function LandingPage() {
   };
 
   const deletePost = (post_id) => {
-    const confirmed = window.confirm("Are you sure you want to delete this post?");
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this post?"
+    );
     if (confirmed) {
       fetch(`http://127.0.0.1:8000/deletePost/${post_id}/`, {
         method: "DELETE",
@@ -67,36 +69,49 @@ function LandingPage() {
               key={post.post_id}
               className="text-darkblue items-center flex flex-col justify-center relative"
             >
-              <div className="bg-white text-darkblue w-full p-4 shadow mb-4 gap-y-4 rounded-xl items-center flex flex-col border-[1px] border-black border-opacity-40 relative">
-                <div className="flex flex-row w-full justify-start">
-                  <div className="flex justify-center items-center w-[40px] h-[40px] ml-2 overflow-hidden rounded-full bg-white">
-                    <img
-                      src={post.profile_image || "/user.jpg"}
-                      alt="Profile"
-                      className="w-[40px] h-[40px] object-cover"
-                    />
+              <div className="bg-white text-darkblue w-full p-4 shadow mb-4  rounded-xl  flex flex-col border-[1px] border-black border-opacity-40 relative">
+                <div className="flex flex-row w-full justify-between">
+                  <div className="flex flex-row">
+                    <div className="flex justify-center items-center w-[40px] h-[40px] ml-1 overflow-hidden rounded-full bg-white">
+                      <img
+                        src={post.profile_image || "/user.jpg"}
+                        alt="Profile"
+                        className="w-20 h-20 object-cover"
+                      />
+                    </div>
+                    <div className="flex flex-col justify-center ml-2">
+                      <p className="text-lg font-semibold font-sans mb-1  sm:text-xl">
+                        {post.user_id}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex flex-col ml-2">
-                    <p className="text-lg sm:text-xl">{post.user_id}</p>
-                    <p className="text-xs sm:text-sm">{post.user_designation}</p>
+
+                  <div>
+                    {post.user_id === username && (
+                      <button
+                        className=" bg-transparent hover:bg-red-500 text-red-500 hover:text-white p-2 rounded-full transition duration-300"
+                        onClick={() => deletePost(post.post_id)}
+                      >
+                        <FontAwesomeIcon icon={faTrash} size="lg" />
+                      </button>
+                    )}
                   </div>
                 </div>
-                <p className="text-base sm:text-lg w-full mt-2 sm:ml-4">{post.post_text}</p>
-                {post.post_image && (
-                  <img
-                    src={post.post_image}
-                    alt="Post"
-                    className="w-full sm:w-96 h-48 sm:h-64 object-cover rounded mb-4 bg-bgcolor"
-                  />
-                )}
-                {post.user_id === username && (
-                  <button
-                    className="absolute top-2 right-2 bg-transparent hover:bg-red-500 text-red-500 hover:text-white p-2 rounded-full transition duration-300"
-                    onClick={() => deletePost(post.post_id)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} size="lg" />
-                  </button>
-                )}
+                <div className="mb-2">
+                  {post.post_image && (
+                    <>
+                      {console.log("Post Image URL:", post.post_image)}
+                      <img
+                        src={post.post_image}
+                        alt="Post"
+                        className="w-full h-auto object-cover rounded"
+                      />
+                    </>
+                  )}
+                </div>
+                <div className="flex flex-row">
+                  <p className="text-lg ml-2 w-full">{post.post_text}</p>
+                </div>
               </div>
             </div>
           ))}

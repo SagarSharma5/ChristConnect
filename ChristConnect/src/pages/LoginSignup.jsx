@@ -79,9 +79,13 @@ function LoginSignup() {
     return Object.keys(validationErrors).length === 0;
   };
 
+  const goToHomePage = () => {
+    navigate("/");
+  };
+
   return (
-    <div className="flex justify-center w-full bg-darkblue min-h-screen">
-      <div className="w-full max-w-md mt-20 bg-white p-8 rounded-xl shadow-lg">
+    <div className="flex justify-center w-[1903px] bg-darkblue min-h-screen">
+      <div className="w-full max-w-md mt-40 h-fit bg-white p-8 rounded-xl shadow-lg">
         <h1 className="text-3xl font-semibold text-center mb-4 text-darkblue">
           {isLogin ? "Login" : "Sign Up"}
         </h1>
@@ -173,10 +177,18 @@ function LoginSignup() {
         <p className="mt-4 text-center text-darkblue">
           {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
           <button
-            className="font-semibold text-blue-500 hover:text-blue-700 transition duration-300"
+            className="font-semibold text-blue-500 hover:text-blue-700 hover:underline transition duration-300"
             onClick={toggleForm}
           >
             {isLogin ? "Sign Up" : "Login"}
+          </button>
+        </p>
+        <p className="mt-4 text-center text-darkblue">
+          <button
+            className="hover:underline italic hover:tracking-wide text-blue-500 hover:text-blue-700 transition duration-300"
+            onClick={goToHomePage}
+          >
+            Continue without logging in
           </button>
         </p>
       </div>

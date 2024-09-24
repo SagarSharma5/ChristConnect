@@ -8,3 +8,4 @@ class post_tableSerializer(serializers.ModelSerializer):
                   'user_id',
                   'post_text',
                   'post_image')
+                  
