@@ -4,6 +4,7 @@ from rest_framework import status
 from .models import post_table
 from .serializers import post_tableSerializer
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 
 @api_view(['GET'])
 def viewAllPostsAPI(request):

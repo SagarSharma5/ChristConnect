@@ -35,20 +35,18 @@ function LandingPage() {
   };
 
   const deletePost = (post_id) => {
-    console.log("Deleting post with ID:", post_id);
-
-    // Show a confirmation dialog
+    // Show a confirmation dialog before deleting
     const confirmed = window.confirm(
       "Are you sure you want to delete this post?"
     );
-
     if (confirmed) {
       fetch(`http://127.0.0.1:8000/deletePost/${post_id}/`, {
         method: "DELETE",
       })
         .then((response) => {
           if (response.ok) {
-            setPosts(posts.filter((post) => post.post_id !== post_id)); // Update state by filtering out deleted post
+            // Update state by removing the deleted post
+            setPosts(posts.filter((post) => post.post_id !== post_id));
           } else {
             console.error("Error deleting post:", response);
           }
@@ -100,6 +98,7 @@ function LandingPage() {
                   />
                 )}
 
+                {/* Display delete button only for the logged-in user's posts */}
                 {post.user_id === username && (
                   <button
                     className="absolute top-2 right-2 bg-transparent hover:bg-red-500 text-red-500 hover:text-white p-2 rounded-full transition duration-300"
