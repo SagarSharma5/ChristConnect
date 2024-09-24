@@ -7,8 +7,15 @@ import News from "../components/News";
 
 function LandingPage() {
   const [posts, setPosts] = useState([]);
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
+    // Fetch username from localStorage
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+
     // Fetch posts from Django API
     fetch("http://127.0.0.1:8000/viewAllPosts/")
       .then((response) => {
@@ -28,7 +35,7 @@ function LandingPage() {
   };
 
   const deletePost = (post_id) => {
-    console.log("Deleting post with ID:", post_id); // Log post_id for debugging
+    console.log("Deleting post with ID:", post_id);
 
     // Show a confirmation dialog
     const confirmed = window.confirm(
@@ -55,7 +62,7 @@ function LandingPage() {
       <Navbar />
       <div className="flex flex-col gap-y-4 pt-8 max-w-full sm:px-0 sm:w-[600px] justify-start">
         <h1 className="text-4xl font-bold font-serif text-darkblue">
-          Welcome, Sagar!
+          Welcome, {username || "Guest"}!
         </h1>
         <div className="mb-4">
           <Create addPost={addPost} />
@@ -93,7 +100,7 @@ function LandingPage() {
                   />
                 )}
 
-                {post.user_id === "SagarSharma" && (
+                {post.user_id === username && (
                   <button
                     className="absolute top-2 right-2 bg-transparent hover:bg-red-500 text-red-500 hover:text-white p-2 rounded-full transition duration-300"
                     onClick={() => deletePost(post.post_id)}

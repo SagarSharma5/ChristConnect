@@ -1,54 +1,23 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
+import { useNavigate } from "react-router-dom";
 
 function LoginSignup() {
-  const [isLogin, setIsLogin] = useState(true); // State to toggle between login and signup
+  const [isLogin, setIsLogin] = useState(true); // Toggle between login and signup
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
     username: "",
+    email: "",
     password: "",
     confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
-  // Validation regex patterns
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // At least 8 chars, one letter and one number
-
-  // Form validation
-  const validate = () => {
-    const errors = {};
-    if (!emailRegex.test(formData.email) && !isLogin) {
-      errors.email = "Invalid email format.";
-    }
-    if (formData.username.length <= 3) {
-      errors.username = "Username must be greater than 3 characters.";
-    }
-    if (!passwordRegex.test(formData.password)) {
-      errors.password =
-        "Password must be at least 8 characters long and contain at least one number.";
-    }
-    if (formData.password !== formData.confirmPassword && !isLogin) {
-      errors.confirmPassword = "Passwords do not match.";
-    }
-    setErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
-  // Handle form changes
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  // Toggle between login and signup
+  // Toggle between Login and Signup mode
   const toggleForm = () => {
     setIsLogin(!isLogin);
     setFormData({
-      name: "",
-      email: "",
       username: "",
+      email: "",
       password: "",
       confirmPassword: "",
     });
@@ -59,104 +28,140 @@ function LoginSignup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log("Form submitted:", formData);
-      // Add logic for handling login/signup here
-      if (isLogin) {
-        // Simulating a successful login
-        // Here you would typically call an API for authentication
-        const loginSuccess = true; // Assume login was successful for demo
-        if (loginSuccess) {
-          navigate("/"); // Redirect to landing page
+      const url = isLogin
+        ? "http://127.0.0.1:8000/login/"
+        : "http://127.0.0.1:8000/signup/";
+
+      const payload = isLogin
+        ? { username: formData.username, password: formData.password }
+        : {
+            username: formData.username,
+            email: formData.email,
+            password: formData.password,
+          };
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          if (isLogin) {
+            // On login success, redirect to landing page
+            localStorage.setItem("username", data.username); // Store username
+            navigate("/"); // Redirect to landing page
+          } else {
+            // On signup success, switch to login form
+            alert("Signup successful, please login.");
+            toggleForm(); // Switch to login mode
+          }
+        } else {
+          alert(data.error || "An error occurred");
         }
-      } else {
-        // Simulating a successful signup
-        // Here you would typically call an API to create the user
-        const signupSuccess = true; // Assume signup was successful for demo
-        if (signupSuccess) {
-          navigate("/"); // Redirect to login page
-        }
+      } catch (error) {
+        console.error("Error:", error);
       }
     }
   };
 
+  // Validate form fields
+  const validate = () => {
+    const validationErrors = {};
+    if (!formData.username) validationErrors.username = "Username is required";
+    if (!formData.password) validationErrors.password = "Password is required";
+    if (!isLogin && formData.password !== formData.confirmPassword) {
+      validationErrors.confirmPassword = "Passwords do not match";
+    }
+    setErrors(validationErrors);
+    return Object.keys(validationErrors).length === 0;
+  };
+
   return (
-    <div className="flex justify-center w-[1903px] bg-darkblue">
-      <div className="w-[90%] sm:w-[400px] h-fit mt-40 bg-white p-8 rounded-xl shadow-lg">
-        <h2 className="text-2xl font-semibold text-darkblue text-center mb-4">
+    <div className="flex justify-center w-full bg-darkblue min-h-screen">
+      <div className="w-full max-w-md mt-20 bg-white p-8 rounded-xl shadow-lg">
+        <h1 className="text-3xl font-semibold text-center mb-4 text-darkblue">
           {isLogin ? "Login" : "Sign Up"}
-        </h2>
+        </h1>
+
         <form onSubmit={handleSubmit}>
-          {!isLogin && (
-            <>
-              <div className="mb-4">
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Name"
-                  className="w-full p-2 border border-gray-300 rounded bg-gray-100 text-darkblue"
-                />
-                {errors.name && (
-                  <p className="text-red-500 text-sm">{errors.name}</p>
-                )}
-              </div>
-              <div className="mb-4">
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Email"
-                  className="w-full p-2 border border-gray-300 rounded bg-gray-100 text-darkblue"
-                />
-                {errors.email && (
-                  <p className="text-red-500 text-sm">{errors.email}</p>
-                )}
-              </div>
-            </>
-          )}
           <div className="mb-4">
             <input
               type="text"
               name="username"
               value={formData.username}
-              onChange={handleChange}
+              onChange={(e) =>
+                setFormData({ ...formData, username: e.target.value })
+              }
               placeholder="Username"
               className="w-full p-2 border border-gray-300 rounded bg-gray-100 text-darkblue"
+              required
             />
             {errors.username && (
               <p className="text-red-500 text-sm">{errors.username}</p>
             )}
           </div>
+
+          {!isLogin && (
+            <div className="mb-4">
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                placeholder="Email"
+                className="w-full p-2 border border-gray-300 rounded bg-gray-100 text-darkblue"
+                required
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email}</p>
+              )}
+            </div>
+          )}
+
           <div className="mb-4">
             <input
               type="password"
               name="password"
               value={formData.password}
-              onChange={handleChange}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
               placeholder="Password"
               className="w-full p-2 border border-gray-300 rounded bg-gray-100 text-darkblue"
+              required
             />
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password}</p>
             )}
           </div>
+
           {!isLogin && (
             <div className="mb-4">
               <input
                 type="password"
                 name="confirmPassword"
                 value={formData.confirmPassword}
-                onChange={handleChange}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    confirmPassword: e.target.value,
+                  })
+                }
                 placeholder="Confirm Password"
                 className="w-full p-2 border border-gray-300 rounded bg-gray-100 text-darkblue"
+                required
               />
               {errors.confirmPassword && (
                 <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
               )}
             </div>
           )}
+
           <button
             type="submit"
             className="w-full py-2 bg-darkblue text-white rounded-lg transition duration-300 hover:bg-opacity-80"
@@ -164,6 +169,7 @@ function LoginSignup() {
             {isLogin ? "Login" : "Sign Up"}
           </button>
         </form>
+
         <p className="mt-4 text-center text-darkblue">
           {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
           <button
