@@ -10,27 +10,22 @@ import Header from "./components/Header";
 
 import News from "./components/News";
 import Footer from "./components/Footer";
+import LoginSignup from "./pages/LoginSignup";
 
 function App() {
   return (
     <Router>
       <Header />
       <div className="flex flex-row bg-bgcolor justify-center">
-        <div className="flex text-white min-h-screen justify-center ">
-          <Navbar />
-          <div className="flex">
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/discussionforum" element={<DiscussionForum />} />
-              <Route path="/events" element={<Events />} />
-              <Route
-                path="/campusmaplocation"
-                element={<CampusMapLocation />}
-              />
-              <Route path="/roommatelisting" element={<RoommateListing />} />
-            </Routes>
-          </div>
-          <News />
+        <div className="flex text-white min-h-screen  justify-center">
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/discussionforum" element={<DiscussionForum />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/campusmaplocation" element={<CampusMapLocation />} />
+            <Route path="/roommatelisting" element={<RoommateListing />} />
+            <Route path="/loginsignup" element={<LoginSignup />} />
+          </Routes>
         </div>
       </div>
       <Footer />

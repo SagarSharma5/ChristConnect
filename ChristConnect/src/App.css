@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+
+.no-strike-through::before {
+  content: "";
+  position: absolute;
+  top: 50%; /* Adjusts the line position */
+  left: 0;
+  right: 0;
+  height: 1px; /* Thickness of the line */
+  background-color: black; /* Color of the line */
+  z-index: -1; /* Ensures the line stays behind the text */
+  transform: translateY(-50%); /* Vertically centers the line */
+}
